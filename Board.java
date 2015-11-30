@@ -33,8 +33,6 @@ public class Board {
     int fX = finalSq.getX();
     int fY = finalSq.getY();
 
-    boolean isCapture = move.isCapture();
-
     board[fX][fY].setOccupier(initialSq.occupiedBy());
     board[iX][iY].setOccupier(Color.NONE);
   }
@@ -48,8 +46,6 @@ public class Board {
     Square finalSq = move.getTo();
     int fX = finalSq.getX();
     int fY = finalSq.getY();
-
-    boolean isCapture = move.isCapture();
 
     board[iX][iY].setOccupier(finalSq.occupiedBy());
     board[fX][fY].setOccupier(Color.NONE);
@@ -82,10 +78,8 @@ public class Board {
     switch(c) {
       case BLACK: return "B";
       case WHITE: return "W";
+      default: return ".";
     }
-
-    return ".";
-
   }
 
   public void printLetters() {
