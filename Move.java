@@ -28,5 +28,6 @@ public class Move {
 
   public String getSAN() {
 
+    return to.toString();
   }
 }

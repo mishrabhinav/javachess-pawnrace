@@ -20,7 +20,7 @@ public class Square {
     return y;
   }
 
-  public Color occupierBy() {
+  public Color occupiedBy() {
 
     return color;
   }
@@ -28,5 +28,10 @@ public class Square {
   public void setOccupier(Color color) {
 
     this.color = color;
+  }
+
+  public String toString() {
+  
+    return(x + "" + y);
   }
 }
