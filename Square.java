@@ -35,12 +35,5 @@ public class Square {
   
     return(x + "" + y);
   }
-/*
-  public void setSquare(int x, int y, Color c) {
 
-    sqX = x;
-    sqY = y;
-    sqColor = c;
-  }
-  */
 }
