@@ -35,5 +35,10 @@ public class Square {
   
     return(x + "" + y);
   }
+  
+  public String toSAN() {
+  	
+  	return Notations.toSAN(this);
+  }
 
 }

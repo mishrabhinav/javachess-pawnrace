@@ -28,6 +28,6 @@ public class Move {
 
   public String getSAN() {
 
-    return to.toString();
+    return Notations.toSAN(to);
   }
 }

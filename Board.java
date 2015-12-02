@@ -4,15 +4,21 @@ public class Board {
 
   public Board(char whiteGap, char blackGap) {
 
+  	int wGap = Notations.charToInt(whiteGap);
+  	int bGap = Notations.charToInt(blackGap);
+  	
     for (int i = 0; i < 8; i++) {
 
       for (int j = 0; j < 8; j++)
         board[i][j] = new Square(i, j);
     }
 
-    for (int i = 0; i < 7; i++) {
+    for (int i = 0; i < 8; i++) {
 
-      board[6][i+1].setOccupier(Color.BLACK);
+    	if (!(i == bGap))
+      board[6][i].setOccupier(Color.BLACK);
+    	
+    	if (!(i == wGap))
       board[1][i].setOccupier(Color.WHITE);
     }
 
@@ -63,7 +69,7 @@ public class Board {
 
       for (int j = 0; j < 8; j++) {
         Color c = board[i][j].occupiedBy();
-        String s = getSquareElementCode(c);
+        char s = getSquareElementCode(c);
         System.out.print(s + " ");
       }
 
@@ -73,12 +79,12 @@ public class Board {
     printLetters();
   }
 
-  public String getSquareElementCode(Color c) {
+  public char getSquareElementCode(Color c) {
 
     switch(c) {
-      case BLACK: return "B";
-      case WHITE: return "W";
-      default: return ".";
+      case BLACK: return ((char) 9823);
+      case WHITE: return ((char) 9817);
+      default: return '.';
     }
   }
 
