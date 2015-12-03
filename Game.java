@@ -39,8 +39,16 @@ public class Game {
   }
 
   public boolean isFinished() {
+  	
+  	boolean gameOver = false;
+  	
+  	for (int i = 0; i < 8; i++) {
+  		if (board.getSquare(0, i).occupiedBy() != Color.NONE
+  				|| board.getSquare(7, i).occupiedBy() != Color.NONE)
+  			gameOver = true;
+  	}
 
-  	return false;
+  	return gameOver;
   }
 
   public Color getGameResult() {
@@ -50,14 +58,26 @@ public class Game {
 
   public Move parseMove(String san) {
 
+  	if (Notations.captureMove(san)) {
+  		
+  		int initialColumn = Notations.charToInt(san.charAt(0));
+  		int targetColumn = Notations.charToInt(san.charAt(2));
+  		int targetRow = Character.getNumericValue(san.charAt(3)) - 1;
+  		
+  		if (board.getSquare(targetRow, initialColumn + 1).occupiedBy() == currentPlayer)
+  			return (new Move(board.getSquare(targetRow, initialColumn + 1), board.getSquare(targetRow + 1, targetColumn + 1), true));
+ 	}
+  	
   	return null;
   } 
   
   public Color changePlayer(Color c) {
+  	
   	switch(c) {
   	case WHITE: return Color.BLACK;
   	case BLACK: return Color.WHITE;
   	default: return Color.NONE;
   	}
+  	
   }
 }

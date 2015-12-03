@@ -28,6 +28,9 @@ public class Move {
 
   public String getSAN() {
 
-    return Notations.toSAN(to);
+  	if (capture) {
+  		return (Notations.intToString(from.getY()) + "x" + Notations.toSAN(to));
+  	} else
+      return Notations.toSAN(to);
   }
 }

@@ -1,3 +1,18 @@
+/* File: MoveSet.java
+ * 
+ * This file contains the valid move generator. It is split up into 3 parts.
+ * Function 1: oneForward() -> checks whether a step forward move is possible
+ *             and if possible gives back the move.
+ * Function 2: twoForward() -> if the pawn is at it's initial position then
+ *             a two step forward move is possible. This function checks it.
+ * Function 3: killDiagonal() -> If there is a pawn of another color on the
+ *             diagonal this function finds it and returns the valid move.
+ *             It uses a helper function called checkSquare() which checks
+ *             whether the desired square and the pawn square have different
+ *             colors or not and hence returns a boolean.  
+ *                        
+ */
+
 public class MoveSet {
 	
 	public static Square oneForward(Board board, Square currentPawn, Color playerColor) {
@@ -35,7 +50,8 @@ public class MoveSet {
 		Square twoAhead = board.getSquare(currentPawn.getX() + x,  currentPawn.getY() + 1);
 		
 		if (currentPawn.getX() == y 
-		      && twoAhead.occupiedBy() == Color.NONE)
+		    && twoAhead.occupiedBy() == Color.NONE
+		    && board.getSquare(currentPawn.getX() + 2, currentPawn.getY() + 1).occupiedBy() == Color.NONE)
 		  return twoAhead;
 		else
 		  return null;

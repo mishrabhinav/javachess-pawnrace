@@ -8,26 +8,35 @@ public class PawnRace {
   	b.display();
   	
   	Player p1 = new Player(g, b, Color.WHITE, false);
-  	printValidMoves(p1.getAllValidMoves());
+//  	printValidMoves(p1.getAllValidMoves());
   	
   	Player p2 = new Player(g, b, Color.BLACK, false);
-  	printValidMoves(p2.getAllValidMoves());
+//  	printValidMoves(p2.getAllValidMoves());
   	
   	b.applyMove(p1.getAllValidMoves()[1]);
+  	//b.applyMove(p1.getAllValidMoves()[12]);
   	//b.applyMove(p1.getAllValidMoves()[1]);
   	System.out.println();
   	b.applyMove(p2.getAllValidMoves()[1]);
   	
   	b.display();
   	
-    Square[] p = p1.getAllPawns();
-    for (int i = 0; i < 7; i++)
-    	System.out.println(p[i].toSAN());
+/*    Square[] p = p1.getAllPawns();
+    for (int i = 0; i < 7; i++) {
+    	System.out.println(p[i].toSAN() + " " + p1.isPassedPawn(p[i]));
+    }
     
     System.out.println();
-    printValidMoves(p1.getAllValidMoves());
     
+    Square[] q = p2.getAllPawns();
+    for (int i = 0; i < 7; i++) {
+    	System.out.println(q[i].toSAN() + " " + p2.isPassedPawn(q[i]));
+    }
     
+    System.out.println();
+    System.out.println(g.parseMove("axb5").getSAN());
+    //printValidMoves(p1.getAllValidMoves());
+*/    
   }
   
   public static void printValidMoves(Move[] validMoves) {

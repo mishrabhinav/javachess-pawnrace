@@ -33,5 +33,30 @@ public class Notations {
 	  case 'H': return 7; 
 	  default: return -1;
 	}
+		
+	}
+	
+	public static String intToString(int i) {
+		
+		String y = null;
+		
+		switch(i) {
+	  case 0: y = "a"; break;
+	  case 1: y = "b"; break;
+	  case 2: y = "c"; break;
+	  case 3: y = "d"; break;
+	  case 4: y = "e"; break;
+	  case 5: y = "f"; break;
+	  case 6: y = "g"; break;
+	  case 7: y = "h"; break;
+	}
+		return y;
+	}
+	
+	public static boolean captureMove(String san) {
+		
+		char x = san.charAt(1);
+		
+		return (x == 'x');
 	}
 }

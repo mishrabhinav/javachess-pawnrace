@@ -6,8 +6,8 @@ public class Player {
 	private boolean isComputerPlayer;
 	private Player opponent;
 	private Square[] currentPawns = new Square[7];
-	private Square[] initialPawns = new Square[7];
-	private Move[] validMoves = new Move[30];
+	//private Square[] initialPawns = new Square[7];
+	//private Move[] validMoves = new Move[30];
 	
   public Player(Game game, Board board, Color color, boolean isComputerPlayer) {
 
@@ -15,7 +15,7 @@ public class Player {
   	this.board = board;
   	this.color = color;
   	this.isComputerPlayer = isComputerPlayer;
-  	initialPawns = this.getAllPawns();
+  	//initialPawns = this.getAllPawns();
   	currentPawns = this.getAllPawns();
   }
 
@@ -56,6 +56,10 @@ public class Player {
   public Move[] getAllValidMoves() {
   	
   	int moveCounter = 0;
+  	Move[] tempMoves = new Move[30];
+  	
+  	Square[] newPawns = this.getAllPawns();
+  	currentPawns = newPawns;
   	
   	for (int i = 0; i < 7 ; i++) {
   		
@@ -64,35 +68,34 @@ public class Player {
   		Square[] diag = MoveSet.killDiagonal(board, currentPawns[i], color);;
   		
   		if (!(oneF == null)) {
-  		  validMoves[moveCounter] = new Move(currentPawns[i], oneF, false);
+  		  tempMoves[moveCounter] = new Move(currentPawns[i], oneF, false);
   		  moveCounter++;
   		}
   		
   		if (!(twoF == null)) {
-  		  validMoves[moveCounter] = new Move(currentPawns[i], twoF, false);
+  		  tempMoves[moveCounter] = new Move(currentPawns[i], twoF, false);
   		  moveCounter++;
   		}
   		
   		for (int j = 0; j < 2; j++) {
   			if (!(diag[j] == null)) {
-  		    validMoves[moveCounter] = new Move(currentPawns[i], diag[j], false);
+  		    tempMoves[moveCounter] = new Move(currentPawns[i], diag[j], false);
   		    moveCounter++;
   			}
   		}
   	}
-  	for (int i = moveCounter; i < validMoves.length; i++)
-  		validMoves[moveCounter] = null;
+  	for (int i = moveCounter; i < tempMoves.length; i++)
+  		tempMoves[moveCounter] = null;
   	
-  	Square[] newPawns = this.getAllPawns();
-  	currentPawns = newPawns;
-  	return validMoves;
+  	
+  	return tempMoves;
   }
 
   public boolean isPassedPawn(Square square) {
-  	//Todo: Passed Pawn Tomorrow.
-  	return false;
+  	
+  	return PassedValidator.isPassedPawn(board, square, color);
   }
-
+  
   public void makeMove() {
 
   	if (isComputerPlayer) {
