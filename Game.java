@@ -9,7 +9,7 @@ public class Game {
   public Game(Board board) {
 
   	this.board = board;
-    currentPlayer = Color.WHITE;
+    this.currentPlayer = Color.WHITE;
   }
 
   public Color getCurrentplayer() {
@@ -42,9 +42,9 @@ public class Game {
   	
   	boolean gameOver = false;
   	
-  	for (int i = 0; i < 8; i++) {
-  		if (board.getSquare(0, i).occupiedBy() != Color.NONE
-  				|| board.getSquare(7, i).occupiedBy() != Color.NONE)
+  	for (int i = 1; i <= 8; i++) {
+  		if (board.getSquare(1, i).occupiedBy() != Color.NONE
+  				|| board.getSquare(8, i).occupiedBy() != Color.NONE)
   			gameOver = true;
   	}
 

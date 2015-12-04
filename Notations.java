@@ -19,6 +19,13 @@ public class Notations {
 	  return ("" + ((char) i));
 	}
 	
+	public static String colorToString(Color c) {
+		
+		String result = c == Color.WHITE ? "White" : "Black";
+		
+		return result;
+	}
+	
 	public static boolean captureMove(String san) {
 		
 		char x = san.charAt(1);

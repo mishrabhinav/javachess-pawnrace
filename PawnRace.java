@@ -1,10 +1,26 @@
+import java.util.Scanner;
+
 public class PawnRace {
 
-	private static Board b = new Board('H', 'A');
-	private static Game g = new Game(b);
+	private static Board board;
+	private static Game game;
+	private static Player white;
+	private static Player black;
+	private static Scanner input = new Scanner(System.in);
 
   public static void main(String[] args) {
 
+  	printHigh();
+  	
+  	initiateObjects();
+  	
+  	printHigh();
+  	
+  	board.display();
+  	
+  	continueGame();
+  	
+/*  	
   	b.display();
   	
   	Player p1 = new Player(g, b, Color.WHITE, false);
@@ -43,7 +59,7 @@ public class PawnRace {
     System.out.println();
     System.out.println(g.parseMove("axb5").getSAN());
     //printValidMoves(p1.getAllValidMoves());
-*/    
+*/   	
   }
   
   public static void printValidMoves(Move[] validMoves) {
@@ -62,5 +78,64 @@ public class PawnRace {
   		}
   	}
   	System.out.println();;
+  }
+  
+  private static void printHigh() {
+  	
+  	System.out.println();
+  	
+  	for (int i = 0; i < 80; i++)
+  		System.out.print("-");
+  	
+  	System.out.println();
+  	System.out.println();
+  	
+  }
+  
+  private static void initiateObjects() {
+  	
+    //Player Introduction Starts.
+  	
+  	System.out.println("-- Hello White Player! You get to move first. "
+  			              + "But will the computer take your chances(y/n)?");
+  	
+  	boolean isWhiteComputer = input.next() == "y";
+  	
+  	System.out.println("-- Hello Black Player! You get to move first. "
+                      + "But will the computer take your chances(y/n)?");
+  	
+  	boolean isBlackComputer = input.next() == "y";
+  	
+  	System.out.println("Black please enter the gaps:\tNote: Enter the two gaps in the form 'a' and then 'h'.");
+  	
+  	char gapWhite = Character.toUpperCase(input.next().charAt(0));
+  	char gapBlack = Character.toUpperCase(input.next().charAt(0));
+  	
+  	board = new Board(gapWhite, gapBlack);
+  	game = new Game(board);
+  	
+  	white = new Player(game, board, Color.WHITE, isWhiteComputer);
+  	printValidMoves(white.getAllValidMoves());
+  	black = new Player(game, board, Color.BLACK, isBlackComputer);
+  	
+  	//Player Introduction Ends.
+  	
+  }
+  
+  private static void continueGame() {
+  	
+  	System.out.println("Current Chance: Player " + Notations.colorToString(game.getCurrentplayer()));
+  	
+  	String nextMove = input.next();
+  	
+  	game.applyMove(Notations.stringToMove(board, game.getCurrentplayer(), nextMove));
+  	
+  	board.display();
+  	
+  	if(game.isFinished()) {
+  		
+  	} else
+  		continueGame();
+  		
   }
 }

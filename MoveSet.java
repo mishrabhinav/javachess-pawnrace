@@ -13,6 +13,8 @@
  *                        
  */
 
+
+//Use a direction variable to shorten your if's. 
 public class MoveSet {
 	
 	public static Square oneForward(Board board, Square currentPawn, Color playerColor) {
@@ -67,73 +69,14 @@ public class MoveSet {
 		int currentX = currentPawn.getX();
 		int currentY = currentPawn.getY();
 		
-		if (currentY == 0) {
+		int i = playerColor == Color.WHITE ? 2 : 0;
 			
-			switch (playerColor) {
-			  case WHITE:
+		if (currentY < 7 && checkSquare(board.getSquare(currentX + i, currentY + 2), playerColor))
+			returnSq1 = board.getSquare(currentX + i, currentY + 2);
 			  	
-			  	if (checkSquare(board.getSquare(currentX + 2, currentY + 2), playerColor))
-			  		returnSq1 = board.getSquare(currentX + 2, currentY + 2);
-			  	
-			  	break;
-			  	
-			  case BLACK: 
-			  	
-			  	if (checkSquare(board.getSquare(currentX, currentY + 2), playerColor))
-			  		returnSq1 = board.getSquare(currentX, currentY + 2);
-			  	
-			  	break;
-			  	
-			  case NONE: break;
-			}
-			
-		} else if (currentY == 7) {
-			
-			switch (playerColor) {
-			  case WHITE: 
-			  	
-			  	if (checkSquare(board.getSquare(currentX + 2, currentY), playerColor))
-			  		returnSq1 = board.getSquare(currentX + 2, currentY);
-			  	
-			  	break;
-			  	
-			  case BLACK:
-			  	
-			  	if (checkSquare(board.getSquare(currentX, currentY), playerColor))
-			  		returnSq1 = board.getSquare(currentX, currentY);
-			  	
-			  	break;
-			  	
-			  case NONE: break;
-			}
-			
-		} else {
-			
-			switch (playerColor) {
-			  case WHITE:
-			  	
-			  	if (checkSquare(board.getSquare(currentX + 2, currentY + 2), playerColor))
-			  		returnSq1 = board.getSquare(currentX + 2, currentY + 2);
-			  	
-			  	if (checkSquare(board.getSquare(currentX + 2, currentY), playerColor))
-			  		returnSq2 = board.getSquare(currentX + 2, currentY);
-			  	
-			  	break;
-			  	
-			  case BLACK:
-			  	
-			  	if (checkSquare(board.getSquare(currentX, currentY + 2), playerColor))
-			  		returnSq1 = board.getSquare(currentX, currentY + 2);
-			  	
-			  	if (checkSquare(board.getSquare(currentX, currentY), playerColor))
-			  		returnSq2 = board.getSquare(currentX, currentY);
-			  	
-			  	break;
-			  	
-			  case NONE: break;
-			}
-		}
-				
+		if (currentY > 0 && checkSquare(board.getSquare(currentX + i, currentY), playerColor))
+			returnSq2 = board.getSquare(currentX + i, currentY);
+			  		
 		returnSq[0] = returnSq1;
 		returnSq[1] = returnSq2;
 		
