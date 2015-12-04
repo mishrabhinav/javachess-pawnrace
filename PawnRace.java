@@ -21,6 +21,13 @@ public class PawnRace {
   	
   	b.display();
   	
+  	System.out.println();
+  	System.out.println(g.parseMove("b3").getSAN());
+  	
+  	System.out.println();
+  	g.changePlayer();
+  	System.out.println(g.parseMove("c6").getSAN());
+  	
 /*    Square[] p = p1.getAllPawns();
     for (int i = 0; i < 7; i++) {
     	System.out.println(p[i].toSAN() + " " + p1.isPassedPawn(p[i]));

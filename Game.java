@@ -26,7 +26,7 @@ public class Game {
 
   	board.applyMove(move);
   	movesList.add(move);
-  	currentPlayer = changePlayer(currentPlayer);
+  	changePlayer();
   
   }
 
@@ -34,7 +34,7 @@ public class Game {
 
   	board.unapplyMove(move);;
   	movesList.remove(movesList.size() - 1);
-  	currentPlayer = changePlayer(currentPlayer);
+  	changePlayer();
   
   }
 
@@ -57,27 +57,13 @@ public class Game {
   }
 
   public Move parseMove(String san) {
-
-  	if (Notations.captureMove(san)) {
-  		
-  		int initialColumn = Notations.charToInt(san.charAt(0));
-  		int targetColumn = Notations.charToInt(san.charAt(2));
-  		int targetRow = Character.getNumericValue(san.charAt(3)) - 1;
-  		
-  		if (board.getSquare(targetRow, initialColumn + 1).occupiedBy() == currentPlayer)
-  			return (new Move(board.getSquare(targetRow, initialColumn + 1), board.getSquare(targetRow + 1, targetColumn + 1), true));
- 	}
-  	
-  	return null;
+ 	
+  	return Notations.stringToMove(board, currentPlayer, san);
   } 
   
-  public Color changePlayer(Color c) {
+  public void changePlayer() {
   	
-  	switch(c) {
-  	case WHITE: return Color.BLACK;
-  	case BLACK: return Color.WHITE;
-  	default: return Color.NONE;
-  	}
-  	
+  	currentPlayer = currentPlayer == Color.WHITE ? Color.BLACK : Color.WHITE;
+
   }
 }
