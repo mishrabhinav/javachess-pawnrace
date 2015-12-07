@@ -31,6 +31,7 @@ public class Game {
   		int i = currentPlayer == Color.WHITE ? 0 : 2;
   		board.getSquare(move.getTo().getX() + i, move.getTo().getY() + 1).setOccupier(Color.NONE);
   	}
+  	System.out.println("\nPlayer performed: " + Notations.moveToString(move));
   	changePlayer();
   
   }

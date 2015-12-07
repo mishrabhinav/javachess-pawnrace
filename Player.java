@@ -139,7 +139,7 @@ public class Player {
 		while (game.getLastMove() == null && moveSet[m].isEnPassantCapture())
 			m = randomGen.nextInt(moveCounter);
 		
-		board.applyMove(moveSet[m]);
+		game.applyMove(moveSet[m]);
 		game.changePlayer();
 
 	}
