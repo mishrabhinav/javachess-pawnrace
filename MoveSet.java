@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 /* File: MoveSet.java
  * 
  * This file contains the valid move generator. It is split up into 3 parts.
@@ -43,28 +45,41 @@ public class MoveSet {
 		
 		if (playerColor == Color.WHITE) {
 		  x = 3;
-		  y = 1;
 		} else {
-			x = -1;
 			y = 6;
 		}
 		
-		Square twoAhead = board.getSquare(currentPawn.getX() + x,  currentPawn.getY() + 1);
+		Square twoAhead;
 		
-		if (currentPawn.getX() == y 
+		if (((currentPawn.getX() == 1 && currentPawn.occupiedBy() == Color.WHITE)
+				|| (currentPawn.getX() == 6 && currentPawn.occupiedBy() == Color.BLACK))
+	      && board.getSquare(currentPawn.getX() + 2, currentPawn.getY() + 1).occupiedBy() == Color.NONE) {
+		  twoAhead = board.getSquare(currentPawn.getX() + x,  currentPawn.getY() + 1);
+		  if(twoAhead.occupiedBy() == Color.NONE)
+				return twoAhead;
+		}
+		
+		return null;
+
+		/*else
+			return null;
+		
+		if ((currentPawn.getX() == 1 && currentPawn.occupiedBy() == Color.WHITE)
+				&& (currentPawn.getX() == 6 && currentPawn.occupiedBy() == Color.BLACK)
 		    && twoAhead.occupiedBy() == Color.NONE
 		    && board.getSquare(currentPawn.getX() + 2, currentPawn.getY() + 1).occupiedBy() == Color.NONE)
 		  return twoAhead;
 		else
 		  return null;
-		  
+		  */
 	}
 	
-	public static Square[] killDiagonal(Board board, Square currentPawn, Color playerColor) {
+	public static Square[] diagonalKill(Board board, Square currentPawn, Color playerColor) {
 		
 		Square[] returnSq = new Square[2];
 		Square returnSq1 = null;
 		Square returnSq2 = null;
+		//Square returnSq3 = null;
 		
 		int currentX = currentPawn.getX();
 		int currentY = currentPawn.getY();
@@ -76,6 +91,8 @@ public class MoveSet {
 			  	
 		if (currentY > 0 && checkSquare(board.getSquare(currentX + i, currentY), playerColor))
 			returnSq2 = board.getSquare(currentX + i, currentY);
+    
+		//for En-passant rule to be applied.
 			  		
 		returnSq[0] = returnSq1;
 		returnSq[1] = returnSq2;
@@ -83,6 +100,30 @@ public class MoveSet {
 		return returnSq;
 	}
 	
+	public static Square enPassantKill(Board board, Square currentPawn, Move lastMove, Color playerColor) {
+		
+		Square initialSq = lastMove.getFrom();
+		Square finalSq = lastMove.getTo();
+		
+		if (Math.abs(initialSq.getX() - finalSq.getX()) == 2) {
+  		int midSquareX = (initialSq.getX() + finalSq.getX())/2;
+	  	int midSquareY = (initialSq.getY() + finalSq.getY())/2;
+		
+		  Square midSq = board.getSquare(midSquareX + 1, midSquareY + 1);
+		
+	  	int i = playerColor == Color.WHITE ? 2 : 0;
+		
+		  if (midSquareY < 7 && (board.getSquare(midSquareX + i, midSquareY + 2) == currentPawn))
+			  return midSq;
+			  	
+		  if (midSquareY > 0 && (board.getSquare(midSquareX + i, midSquareY) == currentPawn))
+			  return midSq;
+		}
+		
+		return null;
+	}
+	
+  
 	private static boolean checkSquare(Square square, Color playerColor) {
 		
 		Color squareColor = square.occupiedBy();

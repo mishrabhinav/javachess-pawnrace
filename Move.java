@@ -3,12 +3,14 @@ public class Move {
   private Square from;
   private Square to;
   private boolean capture;
+  private boolean isEnPassantCapture;
 
-  public Move(Square from, Square to, boolean isCapture) {
+  public Move(Square from, Square to, boolean isCapture, boolean isEnPassantCapture) {
 
     this.from = from;
     this.to   = to;
     this.capture = isCapture;
+    this.isEnPassantCapture = isEnPassantCapture;
   }
   
   public Square getFrom() {
@@ -24,6 +26,11 @@ public class Move {
   public boolean isCapture() {
 
     return capture;
+  }
+  
+  public boolean isEnPassantCapture() {
+  	
+  	return isEnPassantCapture;
   }
 
   public String getSAN() {

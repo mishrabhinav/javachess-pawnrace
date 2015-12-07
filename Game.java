@@ -3,7 +3,7 @@ import java.util.ArrayList;
 public class Game {
 
   private Color currentPlayer;
-  private ArrayList<Move> movesList = new ArrayList<Move>();
+  private ArrayList<Move> movesList = new ArrayList<Move>(10);
   private Board board;
 
   public Game(Board board) {
@@ -19,7 +19,8 @@ public class Game {
 
   public Move getLastMove() {
 
-  	return movesList.get(movesList.size()-1);
+  	Move lastMove = movesList.size() == 0 ? null : movesList.get(movesList.size() - 1);
+  	return lastMove;
   }
 
   public void applyMove(Move move) {

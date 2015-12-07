@@ -6,6 +6,7 @@ public class PawnRace {
 	private static Game game;
 	private static Player white;
 	private static Player black;
+	private static Player current;
 	private static Scanner input = new Scanner(System.in);
 
   public static void main(String[] args) {
@@ -18,48 +19,14 @@ public class PawnRace {
   	
   	board.display();
   	
-  	continueGame();
+  	while(!game.isFinished()) {
+  		askForMove();
+    	board.display();	
+  	}
   	
-/*  	
-  	b.display();
+  	game.changePlayer();
+		System.out.println("Hoorayy! We have a winner " + Notations.colorToString(game.getCurrentplayer()));
   	
-  	Player p1 = new Player(g, b, Color.WHITE, false);
-//  	printValidMoves(p1.getAllValidMoves());
-  	
-  	Player p2 = new Player(g, b, Color.BLACK, false);
-//  	printValidMoves(p2.getAllValidMoves());
-  	
-  	b.applyMove(p1.getAllValidMoves()[1]);
-  	//b.applyMove(p1.getAllValidMoves()[12]);
-  	//b.applyMove(p1.getAllValidMoves()[1]);
-  	System.out.println();
-  	b.applyMove(p2.getAllValidMoves()[1]);
-  	
-  	b.display();
-  	
-  	System.out.println();
-  	System.out.println(g.parseMove("b3").getSAN());
-  	
-  	System.out.println();
-  	g.changePlayer();
-  	System.out.println(g.parseMove("c6").getSAN());
-  	
-/*    Square[] p = p1.getAllPawns();
-    for (int i = 0; i < 7; i++) {
-    	System.out.println(p[i].toSAN() + " " + p1.isPassedPawn(p[i]));
-    }
-    
-    System.out.println();
-    
-    Square[] q = p2.getAllPawns();
-    for (int i = 0; i < 7; i++) {
-    	System.out.println(q[i].toSAN() + " " + p2.isPassedPawn(q[i]));
-    }
-    
-    System.out.println();
-    System.out.println(g.parseMove("axb5").getSAN());
-    //printValidMoves(p1.getAllValidMoves());
-*/   	
   }
   
   public static void printValidMoves(Move[] validMoves) {
@@ -99,12 +66,12 @@ public class PawnRace {
   	System.out.println("-- Hello White Player! You get to move first. "
   			              + "But will the computer take your chances(y/n)?");
   	
-  	boolean isWhiteComputer = input.next() == "y";
+  	boolean isWhiteComputer = input.next().equals("y");
   	
   	System.out.println("-- Hello Black Player! You get to move first. "
                       + "But will the computer take your chances(y/n)?");
   	
-  	boolean isBlackComputer = input.next() == "y";
+  	boolean isBlackComputer = input.next().equals("y");
   	
   	System.out.println("Black please enter the gaps:\tNote: Enter the two gaps in the form 'a' and then 'h'.");
   	
@@ -115,27 +82,44 @@ public class PawnRace {
   	game = new Game(board);
   	
   	white = new Player(game, board, Color.WHITE, isWhiteComputer);
-  	printValidMoves(white.getAllValidMoves());
+  	//printValidMoves(white.getAllValidMoves());
   	black = new Player(game, board, Color.BLACK, isBlackComputer);
-  	
+  	current = white;
   	//Player Introduction Ends.
   	
   }
   
-  private static void continueGame() {
+  private static void askForMove() {
+    
+  	boolean b = true;
+  	String x = "";
   	
-  	System.out.println("Current Chance: Player " + Notations.colorToString(game.getCurrentplayer()));
+  	if (current.isComputerPlayer()) {
+  		current.makeMove();
+  	} else {
   	
-  	String nextMove = input.next();
+  	while (b) {
+
+    	System.out.println(x+ "\nCurrent Player: " + Notations.colorToString(game.getCurrentplayer()) + "\nPlease enter your move: ");
+    	
+    	printValidMoves(current.getAllValidMoves());
   	
-  	game.applyMove(Notations.stringToMove(board, game.getCurrentplayer(), nextMove));
+    	String nextMove = input.next();
   	
-  	board.display();
+    	Move tempMove = Notations.stringToMove(board, game.getCurrentplayer(), nextMove);
   	
-  	if(game.isFinished()) {
-  		
-  	} else
-  		continueGame();
-  		
+    	try {
+    		
+  	    if(current.isValidMove(tempMove)) {
+  		    game.applyMove(tempMove);
+    		  b = false;
+    	  }  
+  	  } 
+  	  catch (Exception e) {
+  	  	x = "\nSorry! Move not valid. Enter again.\n";
+    	}
+    }
+  }
+  	current = current == white ? black : white;
   }
 }

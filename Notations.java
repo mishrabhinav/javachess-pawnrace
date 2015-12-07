@@ -47,12 +47,16 @@ public class Notations {
 		
     if (captureMove(san)) {
     	
+    	int i = currentPlayer == Color.WHITE ? 0 : 2;
+    	
     	int initialColumn = Notations.charToInt(san.charAt(0));
   		int targetColumn = Notations.charToInt(san.charAt(2));
   		int targetRow = Character.getNumericValue(san.charAt(3)) - 1;
   		
-  		if (board.getSquare(targetRow, initialColumn + 1).occupiedBy() == currentPlayer)
-  			return (new Move(board.getSquare(targetRow, initialColumn + 1), board.getSquare(targetRow + 1, targetColumn + 1), true));
+  		Square targetSq = board.getSquare(targetRow + 1, targetColumn + 1);
+  		
+  		if (board.getSquare(targetRow + i, initialColumn + 1).occupiedBy() == currentPlayer)
+  			return (new Move(board.getSquare(targetRow + i, initialColumn + 1), targetSq , true, targetSq.occupiedBy() == Color.NONE));
  	  
     } else {
     	
@@ -64,11 +68,11 @@ public class Notations {
     	
     	//For one step move.
     	if (board.getSquare(targetRow + i, targetColumn + 1).occupiedBy() == currentPlayer) {
-    		return (new Move(board.getSquare(targetRow + i, targetColumn + 1), board.getSquare(targetRow + 1, targetColumn + 1), false));
+    		return (new Move(board.getSquare(targetRow + i, targetColumn + 1), board.getSquare(targetRow + 1, targetColumn + 1), false, false));
     	}
       //For two step move.
     	else if ((targetRow + j == 2 || targetRow + j == 7) && board.getSquare(targetRow + j, targetColumn + 1).occupiedBy() == currentPlayer)
-  			return (new Move(board.getSquare(targetRow + j, targetColumn + 1), board.getSquare(targetRow + 1, targetColumn + 1), false));
+  			return (new Move(board.getSquare(targetRow + j, targetColumn + 1), board.getSquare(targetRow + 1, targetColumn + 1), false, false));
     }
     
     return null;
