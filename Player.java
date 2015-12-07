@@ -7,6 +7,7 @@ public class Player {
 	private Color color;
 	private boolean isComputerPlayer;
 	private Player opponent;
+	private MoveGenAI moveMaster;
 	private Square[] currentPawns = new Square[7];
 	// private Square[] initialPawns = new Square[7];
 	private Move[] validMoves = new Move[30];
@@ -25,6 +26,8 @@ public class Player {
 	public void setOpponent(Player opponent) {
 
 		this.opponent = opponent;
+		if (isComputerPlayer)
+			moveMaster = new MoveGenAI(game, board, this, opponent);
 	}
 
 	public Color getColor() {
@@ -133,13 +136,9 @@ public class Player {
 		Square[] opponentPawns = this.getAllPawns();
 		color = color == Color.WHITE ? Color.BLACK : Color.WHITE;
 		// End
-		Random randomGen = new Random();
-		Move[] moveSet = this.getAllValidMoves();
-		int m = randomGen.nextInt(moveCounter);
-		while (game.getLastMove() == null && moveSet[m].isEnPassantCapture())
-			m = randomGen.nextInt(moveCounter);
+		Move moveSet = moveMaster.moveGen(this.getAllValidMoves(), moveCounter);
 		
-		game.applyMove(moveSet[m]);
+		game.applyMove(moveSet);
 		game.changePlayer();
 
 	}

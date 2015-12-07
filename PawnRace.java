@@ -24,6 +24,8 @@ public class PawnRace {
     	board.display();	
   	}
   	
+  	board.display();
+  	
   	game.changePlayer();
 		System.out.println("Hoorayy! We have a winner " + Notations.colorToString(game.getCurrentplayer()));
   	
@@ -84,6 +86,10 @@ public class PawnRace {
   	white = new Player(game, board, Color.WHITE, isWhiteComputer);
   	//printValidMoves(white.getAllValidMoves());
   	black = new Player(game, board, Color.BLACK, isBlackComputer);
+
+  	white.setOpponent(black);
+  	black.setOpponent(black);
+  	
   	current = white;
   	//Player Introduction Ends.
   	
