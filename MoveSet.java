@@ -60,18 +60,6 @@ public class MoveSet {
 		}
 		
 		return null;
-
-		/*else
-			return null;
-		
-		if ((currentPawn.getX() == 1 && currentPawn.occupiedBy() == Color.WHITE)
-				&& (currentPawn.getX() == 6 && currentPawn.occupiedBy() == Color.BLACK)
-		    && twoAhead.occupiedBy() == Color.NONE
-		    && board.getSquare(currentPawn.getX() + 2, currentPawn.getY() + 1).occupiedBy() == Color.NONE)
-		  return twoAhead;
-		else
-		  return null;
-		  */
 	}
 	
 	public static Square[] diagonalKill(Board board, Square currentPawn, Color playerColor) {
@@ -105,13 +93,15 @@ public class MoveSet {
 		Square initialSq = lastMove.getFrom();
 		Square finalSq = lastMove.getTo();
 		
+		
+		
 		if (Math.abs(initialSq.getX() - finalSq.getX()) == 2) {
   		int midSquareX = (initialSq.getX() + finalSq.getX())/2;
 	  	int midSquareY = (initialSq.getY() + finalSq.getY())/2;
 		
 		  Square midSq = board.getSquare(midSquareX + 1, midSquareY + 1);
-		
-	  	int i = playerColor == Color.WHITE ? 2 : 0;
+		  //System.out.println(Notations.toSAN(midSq));
+	  	int i = playerColor == Color.WHITE ? 0 : 2;
 		
 		  if (midSquareY < 7 && (board.getSquare(midSquareX + i, midSquareY + 2) == currentPawn))
 			  return midSq;

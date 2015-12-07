@@ -19,7 +19,7 @@ public class Game {
 
   public Move getLastMove() {
 
-  	Move lastMove = movesList.size() == 0 ? null : movesList.get(movesList.size() - 1);
+  	Move lastMove = movesList.size() > 0 ? movesList.get(movesList.size() - 1) : null;
   	return lastMove;
   }
 
@@ -27,6 +27,10 @@ public class Game {
 
   	board.applyMove(move);
   	movesList.add(move);
+  	if (move.isEnPassantCapture()) {
+  		int i = currentPlayer == Color.WHITE ? 0 : 2;
+  		board.getSquare(move.getTo().getX() + i, move.getTo().getY() + 1).setOccupier(Color.NONE);
+  	}
   	changePlayer();
   
   }
