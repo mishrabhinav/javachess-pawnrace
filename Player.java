@@ -162,6 +162,19 @@ public class Player {
 		for (int i = 0; i < len; i++)
 			if (allValMoves[i] != null)
 				result.add(allValMoves[i]);
-		return null;
+		return result;
+	}
+	
+	public ArrayList<Square> listOfPawns() {
+		
+		ArrayList<Square> result = new ArrayList<>();
+		Square[] allPawns = this.getAllPawns();
+		int len = allPawns.length;
+		
+		for(int i = 0; i < len; i++)
+			if (allPawns[i] != null)
+				result.add(allPawns[i]);
+		
+		return result;
 	}
 }
