@@ -24,9 +24,10 @@ public class MoveGenAI2 {
 	private int homeRowBlack = 6;
 	private int finishRow;
 	protected ArrayList<Double> ratedPawns;
-	private int estnow;         // base estimation
-  private int est_cost;       // Cost estimation value
-  private int est_attackCost;
+	private double estnow;         // base estimation
+  private double est_cost;       // Cost estimation value
+  private double est_attackCost;
+  private boolean white;
 	//private Node<Move> miniMaxTree;
 	
   //-----Constructor---------------------------------------------------------//
@@ -49,41 +50,38 @@ public class MoveGenAI2 {
 		
 			return null;
 		}
-	 
-	 private void setDefaults() {
-		 estnow = 0;
-		 est_cost = 0;
-		 est_attackCost = 0;
-	 }
 	 	 
 	  public double evaluate() {
 	  	
-	  	double dc = ratePawns(self, opponent) - est_cost;;
+	  	double dc = ratePawns(self, opponent) - est_cost;
 	  	double dac = rateAttacks(self, opponent) - est_attackCost;
 	  	return dc*10 + dac;
 	  }
 	  
-	  private double estimateBase() {
+	  private double estimateBase(Color color) {
 
 	    est_cost = 0;
 	    est_attackCost = 0;
 	    double out = evaluate();
-	    est_cost = getCost();
-	    est_attackCost = getAttackCost();
+	    est_cost = this.cost(color);
+	    est_attackCost = this.costAttacks(color);
 	    return out;
 	  }
 	  
 	  public double ratePawns(Player self, Player opp) {
 	  	
-	  	return this.cost(self, self.listOfPawns()) - this.cost(opp, opp.listOfPawns());
+	  	return this.cost(self.getColor()) - this.cost(opponent.getColor());
 	  }
 	  
 	  public double rateAttacks(Player self, Player opp) {
 	  	
-	  	return this.costAttacks(self, self.listOfValidMoves()) - this.costAttacks(opp, opp.listOfValidMoves());
+	  	return this.costAttacks(self.getColor()) - this.costAttacks(opponent.getColor());
 	  }
 	  
-	  public double cost(Player player, ArrayList<Square> pawns) {
+	  public double cost(Color color) {
+	  	
+	  	Player player = this.getPlayerFromColor(color);
+	  	ArrayList<Square> pawns = player.listOfPawns();
 	  	
 	  	int finishRow = player.getColor() == Color.WHITE ? 7 : 0;
 	  	int result = 0;
@@ -96,10 +94,13 @@ public class MoveGenAI2 {
 	  		result += j;
 	  	}
 	  	
-	  	return (player.getColor() == Color.WHITE ? 1 : -1)*result;
+	  	return (color == Color.WHITE ? 1 : -1)*result;
 	  }
 	  
-	  public double costAttacks(Player player, ArrayList<Move> moves) {
+	  public double costAttacks(Color color) {
+	  	
+	  	Player player = this.getPlayerFromColor(color);
+	  	ArrayList<Move> moves = player.listOfValidMoves();
 	  	
 	  	int result = 0;
 	  	
@@ -108,5 +109,13 @@ public class MoveGenAI2 {
 	  	}
 	  	
 	  	return (player.getColor() == Color.WHITE ? 1 : -1)*result;
+	  }
+	  
+	  public Player getPlayerFromColor(Color playerColor) {
+	  	
+	  	if (playerColor == self.getColor())
+	  		return self;
+	  	else
+	  		return opponent;
 	  }
 }
