@@ -55,58 +55,7 @@ public class MoveGenAI2 {
 		 est_cost = 0;
 		 est_attackCost = 0;
 	 }
-	 	
-	 private int rateMove(Move move) {
-	  	
-	  		if (moveToWin(move)) {
-	  			return 10;
-	  		}
-	  		else if (createsPassedPawn(move)) {
-	  			return 9;
-	  		}
-	  		else if(isNonEnPassant(move)) {
-	  			return 7;
-	  		}
-	  		else if(isEnPassant(move)) { 
-	  			return 6;
-	  		}
-	  		else if (isTwoForward(move)) {
-	  			return 5;
-	  		}
-	  		else {
-	  			return 4;
-	  		}
- }
-	  
-	  private boolean moveToWin(Move move) {
-	  	
-	  	return move.getTo().getX() == finishRow;
-	  }
-	  
-	  private boolean createsPassedPawn(Move move) {
-	  	
-	  	board.applyMove(move);
-	  	boolean isTrue = self.isPassedPawn(move.getTo());
-	  	board.unapplyMove(move);
-	  	
-	  	return isTrue;
-	  }
-	  
-	  private boolean isNonEnPassant(Move move) {
-	  	
-	  	return move.isCapture() && !move.isEnPassantCapture();
-	  }
-	  
-	  private boolean isEnPassant(Move move) {
-	  	
-	  	return move.isEnPassantCapture();
-	  }
-	  
-	  private boolean isTwoForward(Move move) {
-	  	
-	  	return Math.abs(move.getFrom().getX() - move.getTo().getX()) == 2;
-	  }
-	  
+	 	 
 	  public double evaluate() {
 	  	
 	  	double dc = ratePawns(self, opponent) - est_cost;;
