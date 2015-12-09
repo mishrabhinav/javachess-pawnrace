@@ -1,5 +1,3 @@
-import java.util.Random;
-
 public class Player {
 
 	private Game game;
@@ -8,6 +6,7 @@ public class Player {
 	private boolean isComputerPlayer;
 	private Player opponent;
 	private MoveGenAI moveMaster;
+	private MoveGenAI2 tester;
 	private Square[] currentPawns = new Square[7];
 	// private Square[] initialPawns = new Square[7];
 	private Move[] validMoves = new Move[30];
@@ -28,6 +27,7 @@ public class Player {
 		this.opponent = opponent;
 		if (isComputerPlayer)
 			moveMaster = new MoveGenAI(game, board, this, opponent);
+		  tester = new MoveGenAI2(game, board, this, opponent);
 	}
 
 	public Color getColor() {
@@ -123,6 +123,10 @@ public class Player {
 		}
 		return false;
 	}
+	
+	public int numValidMoves() {
+		return moveCounter;
+	}
 
 	public boolean isPassedPawn(Square square) {
 
@@ -131,15 +135,22 @@ public class Player {
 
 	public void makeMove() {
 
-		// Getting opponent pawns.
+		/* Getting opponent pawns.
 		color = color == Color.WHITE ? Color.BLACK : Color.WHITE;
 		Square[] opponentPawns = this.getAllPawns();
 		color = color == Color.WHITE ? Color.BLACK : Color.WHITE;
-		// End
-		Move moveSet = moveMaster.moveGen(this.getAllValidMoves(), moveCounter);
+		End */
+		this.getAllValidMoves();
+		try {
+		  Move moveSet = moveMaster.moveGen(this.getAllValidMoves(), moveCounter);
+		  game.applyMove(moveSet);
+		  System.out.println("" + tester.evaluateBoard(color, true));
+		}
+		catch (Exception e) {
+			//moveCounter = 0;
+		}
 		
-		game.applyMove(moveSet);
-		game.changePlayer();
+		
 
 	}
 }

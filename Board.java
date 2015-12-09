@@ -52,9 +52,23 @@ public class Board {
     Square finalSq = move.getTo();
     int fX = finalSq.getX();
     int fY = finalSq.getY();
+    
+    int i = finalSq.occupiedBy() == Color.WHITE ? -1 : 1;
+    Color c = finalSq.occupiedBy() == Color.WHITE ? Color.BLACK : Color.WHITE;
 
+    if (move.isEnPassantCapture()) {
+    	board[iX][iY].setOccupier(finalSq.occupiedBy());
+      board[fX][fY].setOccupier(Color.NONE);
+      board[fX + i][fY].setOccupier(c);
+    } 
+    else if (move.isCapture()) {
+    	board[iX][iY].setOccupier(finalSq.occupiedBy());
+      board[fX][fY].setOccupier(c);
+    }
+    else {
     board[iX][iY].setOccupier(finalSq.occupiedBy());
     board[fX][fY].setOccupier(Color.NONE);
+    }
   }
 
   public void display() {

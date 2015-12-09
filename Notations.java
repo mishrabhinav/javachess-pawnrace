@@ -16,7 +16,7 @@ public class Notations {
 	
 	public static String intToString(int i) {
 				
-	  return ("" + ((char) i));
+	  return ("" + ((char) ('a' + i)));
 	}
 	
 	public static String colorToString(Color c) {
