@@ -146,6 +146,11 @@ public class MoveGenAI2 {
 			return boardVal;
 	  }
 	  
+	  public double evaluate() {
+	  	
+	  	return ratePawns(self, opponent)*10 + rateAttacks(self, opponent);
+	  }
+	  
 	  public double ratePawns(Player self, Player opp) {
 	  	
 	  	return this.cost(self, self.listOfPawns()) - this.cost(opp, opp.listOfPawns());
