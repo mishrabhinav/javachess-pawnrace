@@ -8,21 +8,21 @@ public class MoveGenAI2 {
   //-------------------------------------------------------------------------//
 	
 	// Self Attributes
-	private Player self;
+	protected Player self;
 	private Color selfColor;
-	private boolean myPassedPawnBool;
-	private Square myPassedPawn;
+	//private boolean myPassedPawnBool;
+	//private Square myPassedPawn;
 	
 	// Opponent Attributes
-	private Player opponent;
+	protected Player opponent;
 	private Color opponentColor;
 	private Move[] oppMoves;
-	private boolean oppPassedPawnBool;
-	private Square oppPassedPawn;
+	//private boolean oppPassedPawnBool;
+	//private Square oppPassedPawn;
 	
 	// Global Attributes
 	private Game game;
-	private Board board;
+	protected Board board;
 	private int homeRowWhite = 1;
 	private int homeRowBlack = 6;
 	private int finishRow = selfColor == Color.WHITE ? 7 : 0;
@@ -98,17 +98,15 @@ public class MoveGenAI2 {
 	  	return Math.abs(move.getFrom().getX() - move.getTo().getX()) == 2;
 	  }
 	  
-	  public double evaluateBoard(Color color, boolean forSelf) {
+	  public double evaluateBoard(Player self, Player opp) {
 	  	
-	  	int homeRow = color == Color.WHITE ? homeRowWhite : homeRowBlack;
-	  	int finishROW = color == Color.WHITE ? 7 : 0;
+	  	int homeRow = self.getColor() == Color.WHITE ? homeRowWhite : homeRowBlack;
+	  	int finishROW = self.getColor() == Color.WHITE ? 7 : 0;
 	  	double boardVal = 0;
-	  	Square[] pawns = forSelf ? self.getAllPawns() : opponent.getAllPawns();
-	  	Square[] oppPawns = forSelf ? opponent.getAllPawns() : self.getAllPawns();
-	  	Player player = color == self.getColor() ? self : opponent;
-	  	Player otherPlayer = color == self.getColor() ? opponent : self;
-	  	Move[] moves = player.getAllValidMoves();
-	  	Move[] otherMoves = otherPlayer.getAllValidMoves();
+	  	Square[] pawns = self.getAllPawns();
+	  	Square[] oppPawns = opponent.getAllPawns();
+	  	Move[] moves = self.getAllValidMoves();
+	  	Move[] otherMoves = opp.getAllValidMoves();
 	  	
 	  	if (game.getLastMove() == null)
   			return 3;
