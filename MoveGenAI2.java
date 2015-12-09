@@ -151,6 +151,11 @@ public class MoveGenAI2 {
 	  	return this.cost(self, self.listOfPawns()) - this.cost(opp, opp.listOfPawns());
 	  }
 	  
+	  public double rateAttacks(Player self, Player opp) {
+	  	
+	  	return this.costAttacks(self.listOfValidMoves()) - this.costAttacks(opp.listOfValidMoves());
+	  }
+	  
 	  public double cost(Player player, ArrayList<Square> pawns) {
 	  	
 	  	int finishRow = player.getColor() == Color.WHITE ? 7 : 0;
@@ -160,6 +165,17 @@ public class MoveGenAI2 {
 	  		double j = player.isPassedPawn(pawns.get(i)) ? (2.0) : (1.0);
 	  		j = pawns.get(i).getX() == finishRow ? (10.0) : j;
 	  		result += j;
+	  	}
+	  	
+	  	return result;
+	  }
+	  
+	  public double costAttacks(ArrayList<Move> moves) {
+	  	
+	  	int result = 0;
+	  	
+	  	for(int i = 0; i < moves.size(); i++) {
+	  		result += moves.get(i).isCapture() ? 1 : 0; 
 	  	}
 	  	
 	  	return result;
