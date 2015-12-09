@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 public class Player {
 
 	private Game game;
@@ -144,13 +146,22 @@ public class Player {
 		try {
 		  Move moveSet = moveMaster.moveGen(this.getAllValidMoves(), moveCounter);
 		  game.applyMove(moveSet);
-		  System.out.println("" + tester.evaluateBoard(color, true));
+		  System.out.println("" + tester.evaluateBoard(this, opponent));
 		}
 		catch (Exception e) {
 			//moveCounter = 0;
 		}
+	}
+	
+	public ArrayList<Move> listOfValidMoves() {
 		
+		ArrayList<Move> result = new ArrayList<>();
+		Move[] allValMoves = this.getAllValidMoves();
+		int len = allValMoves.length;
 		
-
+		for (int i = 0; i < len; i++)
+			if (allValMoves[i] != null)
+				result.add(allValMoves[i]);
+		return null;
 	}
 }
