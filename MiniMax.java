@@ -21,7 +21,7 @@ public class MiniMax extends MoveGenAI2{
 	private double Max(int depth) {
 		
 		if (depth == 0)
-			return evaluateBoard(self, opponent);
+			return evaluate(self, opponent);
 		
 		double best = -INF;
 		ArrayList<Move> moves = self.listOfValidMoves();
@@ -41,7 +41,7 @@ public class MiniMax extends MoveGenAI2{
 	private double Min(int depth) {
 		
 		if (depth == 0)
-			return evaluateBoard(self, opponent);
+			return evaluate(opponent, self);
 		
 		double best = -INF;
 		ArrayList<Move> moves = self.listOfValidMoves();
