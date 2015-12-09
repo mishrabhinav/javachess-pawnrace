@@ -98,24 +98,6 @@ public class MoveGenAI2 {
 	  	return Math.abs(move.getFrom().getX() - move.getTo().getX()) == 2;
 	  }
 	  
-	  private void ABPruning(Node<Move> moveTree, Move[] moves, int moveCounter) {
-	  	
-	  }
-	  
-	  private void miniMax(Node<Move> moveTree, Move[] moves, int moveCounter) {
-	  	miniMaxTree = new Node<>();
-	  	
-	  	//Creating my layer of Moves.
-	  	for(int i = 0; i < moveCounter; i++) {
-	  		int k = rateMove(moves[i]);
-	  		new Node<Move>(moves[i], rateMove(moves[i]), miniMaxTree);
-	  	}
-	  	
-	  	List<Node<Move>> myCurrentMoves = miniMaxTree.getChildren();
-	  	
-	  	//Generate the possible opponent moves of all your previous moves.
-	  }
-	  
 	  public double evaluateBoard(Color color, boolean forSelf) {
 	  	
 	  	int homeRow = color == Color.WHITE ? homeRowWhite : homeRowBlack;
