@@ -10,7 +10,12 @@ public class MiniMax extends MoveGenAI2{
 	}
 
 	public void minimax(int depth) {
-		
+		this.Max(depth);
+	}
+	
+	public Move getBestMove(int depth) {
+		minimax(depth);
+		return choice;
 	}
 	
 	private double Max(int depth) {
