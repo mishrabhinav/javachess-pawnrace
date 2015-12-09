@@ -146,13 +146,22 @@ public class MoveGenAI2 {
 			return boardVal;
 	  }
 	  
-	  public void ratePawns(Player player, ArrayList<Square> pawns) {
+	  public double ratePawns(Player self, Player opp) {
 	  	
-	  	ratedPawns = new ArrayList<>(pawns.size());
+	  	return this.cost(self, self.listOfPawns()) - this.cost(opp, opp.listOfPawns());
+	  }
+	  
+	  public double cost(Player player, ArrayList<Square> pawns) {
+	  	
+	  	int finishRow = player.getColor() == Color.WHITE ? 7 : 0;
+	  	int result = 0;
 	  	
 	  	for (int i = 0; i < pawns.size(); i++) {
 	  		double j = player.isPassedPawn(pawns.get(i)) ? (2.0) : (1.0);
-	  		ratedPawns.add(j);
+	  		j = pawns.get(i).getX() == finishRow ? (10.0) : j;
+	  		result += j;
 	  	}
+	  	
+	  	return result;
 	  }
 }
