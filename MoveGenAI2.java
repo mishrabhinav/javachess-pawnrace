@@ -9,14 +9,14 @@ public class MoveGenAI2 {
 	
 	// Self Attributes
 	protected Player self;
-	private Color selfColor;
+  //private Color selfColor;
 	//private boolean myPassedPawnBool;
 	//private Square myPassedPawn;
 	
 	// Opponent Attributes
 	protected Player opponent;
-	private Color opponentColor;
-	private Move[] oppMoves;
+  //private Color opponentColor;
+	//private Move[] oppMoves;
 	//private boolean oppPassedPawnBool;
 	//private Square oppPassedPawn;
 	
@@ -25,8 +25,9 @@ public class MoveGenAI2 {
 	protected Board board;
 	private int homeRowWhite = 1;
 	private int homeRowBlack = 6;
-	private int finishRow = selfColor == Color.WHITE ? 7 : 0;
-	private Node<Move> miniMaxTree;
+	private int finishRow = self.getColor() == Color.WHITE ? 7 : 0;
+	protected ArrayList<Double> ratedPawns;
+	//private Node<Move> miniMaxTree;
 	
   //-----Constructor---------------------------------------------------------//
 	
@@ -36,8 +37,8 @@ public class MoveGenAI2 {
 		this.board = board;
 		this.self = self;
 		this.opponent = opponent;
-		this.selfColor = self.getColor();
-		this.opponentColor = opponent.getColor();
+//		this.selfColor = self.getColor();
+//		this.opponentColor = opponent.getColor();
 	}
 	
   //-----Move Generator------------------------------------------------------//
@@ -143,5 +144,15 @@ public class MoveGenAI2 {
 	  		
 	  	}
 			return boardVal;
+	  }
+	  
+	  public void ratePawns(Player player, ArrayList<Square> pawns) {
+	  	
+	  	ratedPawns = new ArrayList<>(pawns.size());
+	  	
+	  	for (int i = 0; i < pawns.size(); i++) {
+	  		double j = player.isPassedPawn(pawns.get(i)) ? (2.0) : (1.0);
+	  		ratedPawns.add(j);
+	  	}
 	  }
 }
