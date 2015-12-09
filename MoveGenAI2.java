@@ -146,9 +146,9 @@ public class MoveGenAI2 {
 			return boardVal;
 	  }
 	  
-	  public double evaluate() {
+	  public double evaluate(Player self, Player opp) {
 	  	
-	  	return ratePawns(self, opponent)*10 + rateAttacks(self, opponent);
+	  	return ratePawns(self, opp)*10 + rateAttacks(self, opp);
 	  }
 	  
 	  public double ratePawns(Player self, Player opp) {
