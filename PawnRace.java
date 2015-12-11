@@ -110,7 +110,8 @@ public class PawnRace {
   	String x = "";
   	
   	if (current.isComputerPlayer()) {
-  		current.makeMove();
+  		  Move mm = current.makeMove();
+  			  game.applyMove(mm);
   	} else {
   	
   	while (b) {
