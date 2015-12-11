@@ -8,7 +8,7 @@ public class Player {
 	private boolean isComputerPlayer;
 	private Player opponent;
 	private MoveGenAI moveMaster;
-	private MoveGenAI2 tester;
+	private MiniMax tester;
 	private Square[] currentPawns = new Square[7];
 	// private Square[] initialPawns = new Square[7];
 	private Move[] validMoves = new Move[30];
@@ -29,7 +29,7 @@ public class Player {
 		this.opponent = opponent;
 		if (isComputerPlayer)
 			moveMaster = new MoveGenAI(game, board, this, opponent);
-		  tester = new MoveGenAI2(game, board, this, opponent);
+		  tester = new MiniMax(game, board, this, opponent);
 	}
 
 	public Color getColor() {
@@ -135,14 +135,14 @@ public class Player {
 		return PassedValidator.isPassedPawn(board, square, color);
 	}
 
-	public void makeMove() {
+	public Move makeMove() {
 
 		/* Getting opponent pawns.
 		color = color == Color.WHITE ? Color.BLACK : Color.WHITE;
 		Square[] opponentPawns = this.getAllPawns();
 		color = color == Color.WHITE ? Color.BLACK : Color.WHITE;
 		End */
-		this.getAllValidMoves();
+/*		this.getAllValidMoves();
 		try {
 		  Move moveSet = moveMaster.moveGen(this.getAllValidMoves(), moveCounter);
 		  game.applyMove(moveSet);
@@ -151,7 +151,10 @@ public class Player {
 		catch (Exception e) {
 			//moveCounter = 0;
 		}
-	}
+*/
+		tester.estimateBase(color);
+		return (tester.getBestMove(this.color, 3));
+		}
 	
 	public ArrayList<Move> listOfValidMoves() {
 		
