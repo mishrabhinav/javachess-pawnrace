@@ -58,7 +58,7 @@ public class MoveGenAI2 {
 	  	return dc*10 + dac;
 	  }
 	  
-	  private double estimateBase(Color color) {
+	  public double estimateBase(Color color) {
 
 	    est_cost = 0;
 	    est_attackCost = 0;
@@ -70,12 +70,12 @@ public class MoveGenAI2 {
 	  
 	  public double ratePawns(Player self, Player opp) {
 	  	
-	  	return this.cost(self.getColor()) - this.cost(opponent.getColor());
+	  	return this.cost(self.getColor()) + this.cost(opponent.getColor());
 	  }
 	  
 	  public double rateAttacks(Player self, Player opp) {
 	  	
-	  	return this.costAttacks(self.getColor()) - this.costAttacks(opponent.getColor());
+	  	return this.costAttacks(self.getColor()) + this.costAttacks(opponent.getColor());
 	  }
 	  
 	  public double cost(Color color) {
