@@ -9,19 +9,21 @@ public class MiniMax extends MoveGenAI2{
 		// TODO Auto-generated constructor stub
 	}
 
-	public void minimax(int depth) {
-		this.Max(depth);
+	public void minimax(int depth, boolean white) {
+		double val = 0.0;
+		val = white ? Max(depth) : Min(depth);
 	}
 	
-	public Move getBestMove(int depth) {
-		minimax(depth);
+	public Move getBestMove(Color player, int depth) {
+		boolean white = player == Color.WHITE;
+		minimax(depth, white);
 		return choice;
 	}
 	
 	private double Max(int depth) {
 		
 		if (depth == 0)
-			return evaluate(self, opponent);
+			return evaluate();
 		
 		double best = -INF;
 		ArrayList<Move> moves = self.listOfValidMoves();
@@ -41,10 +43,10 @@ public class MiniMax extends MoveGenAI2{
 	private double Min(int depth) {
 		
 		if (depth == 0)
-			return evaluate(opponent, self);
+			return evaluate();
 		
 		double best = -INF;
-		ArrayList<Move> moves = self.listOfValidMoves();
+		ArrayList<Move> moves = opponent.listOfValidMoves();
 		while (moves.size() > 0) {
 			Move tempChoice = moves.remove(0);
 			board.applyMove(tempChoice);
