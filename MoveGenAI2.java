@@ -28,6 +28,8 @@ public class MoveGenAI2 {
   private double est_cost;       // Cost estimation value
   private double est_attackCost;
   private boolean white;
+  private int INF = -1000;
+  private Move bestOption;
 	//private Node<Move> miniMaxTree;
 	
   //-----Constructor---------------------------------------------------------//
@@ -39,83 +41,77 @@ public class MoveGenAI2 {
 		this.self = self;
 		this.opponent = opponent;
 		this.finishRow = self.getColor() == Color.WHITE ? 7 : 0;
-		rateAttacks(self, opponent);
-//		this.selfColor = self.getColor();
-//		this.opponentColor = opponent.getColor();
 	}
 	
   //-----Move Generator------------------------------------------------------//
-	
-	 public Move moveGen(Move[] validMoves, int moveCounter) {
-		
-			return null;
-		}
 	 	 
-	  public double evaluate() {
-	  	
-	  	double dc = ratePawns(self, opponent) - est_cost;
-	  	double dac = rateAttacks(self, opponent) - est_attackCost;
-	  	return dc*10 + dac;
-	  }
-	  
-	  public double estimateBase(Color color) {
-
-	    est_cost = 0;
-	    est_attackCost = 0;
-	    double out = evaluate();
-	    est_cost = this.cost(color);
-	    est_attackCost = this.costAttacks(color);
-	    return out;
-	  }
-	  
-	  public double ratePawns(Player self, Player opp) {
-	  	
-	  	return this.cost(self.getColor()) + this.cost(opponent.getColor());
-	  }
-	  
-	  public double rateAttacks(Player self, Player opp) {
-	  	
-	  	return this.costAttacks(self.getColor()) + this.costAttacks(opponent.getColor());
-	  }
-	  
-	  public double cost(Color color) {
-	  	
-	  	Player player = this.getPlayerFromColor(color);
-	  	ArrayList<Square> pawns = player.listOfPawns();
-	  	
-	  	int finishRow = player.getColor() == Color.WHITE ? 7 : 0;
-	  	int result = 0;
-	  	
-	  	for (int i = 0; i < pawns.size(); i++) {
-	  		double j = player.isPassedPawn(pawns.get(i)) ? (4.0) : (1.0);
-	  		j = pawns.get(i).getX() == finishRow ? (10.0) : j;
-	  		if ( j == 1 )
-	  			j = Math.abs(pawns.get(i).getX() - Math.abs(finishRow - 6))/2.0;
-	  		result += j;
-	  	}
-	  	
-	  	return (color == Color.WHITE ? 1 : -1)*result;
-	  }
-	  
-	  public double costAttacks(Color color) {
-	  	
-	  	Player player = this.getPlayerFromColor(color);
-	  	ArrayList<Move> moves = player.listOfValidMoves();
-	  	
-	  	int result = 0;
-	  	
-	  	for(int i = 0; i < moves.size(); i++) {
-	  		result += moves.get(i).isCapture() ? 5 : 0; 
-	  	}
-	  	
-	  	return (player.getColor() == Color.WHITE ? 1 : -1)*result;
-	  }
-	  
-	  public Player getPlayerFromColor(Color playerColor) {
-	  	
-	  	if (playerColor == self.getColor())
-	  		return self;
-	  	else
-	  		return opponent;
-	  }
+	private int ratePawns(Player player) {
+		
+		int pawnScore = 0;
+		
+		for (int i = 0; i < 8; i++)
+			for (int j = 0; j < 8; j++){
+				pawnScore += board.getSquare(i,j).occupiedBy() == player.getColor() ? 1 : -1;
+			}
+		return pawnScore;
+	}
+	
+	private int rateAttacks(Player player) {
+		
+		int attackScore = 0;
+		
+		ArrayList<Move> playerMoves = player.listOfValidMoves();
+		//ArrayList<Move> oppMoves    = player.getOpponent().listOfValidMoves();
+		  
+		for (int i = 0; i < playerMoves.size(); i++){
+			if (playerMoves.get(i).isCapture()){
+			  attackScore += 2;	
+			}
+		}
+		return attackScore;
+	}
+	
+	private int evaluate() {
+		return 0;
+	}
+	
+	private int Max(int depth) {
+		
+		if (depth == 0)
+			return evaluate();
+		
+		int best = -INF;
+		ArrayList<Move> moves = self.listOfValidMoves();
+		while (moves.size() > 0) {
+			Move tempChoice = moves.remove(0);
+			board.applyMove(tempChoice);
+			int val = -Min(depth-1);
+			if (val > best) {
+				best = val;
+				bestOption = tempChoice;
+			}
+			board.unapplyMove(tempChoice);
+		}
+		return best;
+	}
+	
+	private int Min(int depth) {
+		
+		if (depth == 0)
+			return evaluate();
+		
+		int best = -INF;
+		ArrayList<Move> moves = opponent.listOfValidMoves();
+		while (moves.size() > 0) {
+			Move tempChoice = moves.remove(0);
+			board.applyMove(tempChoice);
+			int val = -Max(depth-1);
+			if (val > best) {
+				best = val;
+				bestOption = tempChoice;
+			}
+			board.unapplyMove(tempChoice);
+		}
+		return best;
+	}
 }
