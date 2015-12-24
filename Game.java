@@ -44,15 +44,17 @@ public class Game {
   
   }
 
-  public boolean isFinished() {
+  public boolean isFinished(Player white, Player black) {
   	
   	boolean gameOver = false;
   	
   	for (int i = 1; i <= 8; i++) {
   		if (board.getSquare(1, i).occupiedBy() != Color.NONE
-  				|| board.getSquare(8, i).occupiedBy() != Color.NONE)
+  				|| board.getSquare(8, i).occupiedBy() != Color.NONE
+  				|| white.numValidMoves() != 0 || black.numValidMoves() != 0)
   			gameOver = true;
   	}
+  	
 
   	return gameOver;
   }

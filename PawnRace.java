@@ -22,7 +22,7 @@ public class PawnRace {
   	boolean c = true;
   	int i = 0;
   	
-  	while(!game.isFinished() && c) {
+  	while(!game.isFinished(white, black) && c) {
   		askForMove();
   		i++;
   		c = i > 2 ? (white.numValidMoves() != 0 || black.numValidMoves() != 0) : true;
@@ -33,7 +33,7 @@ public class PawnRace {
   	
   	game.changePlayer();
   	
-  	if (game.isFinished())
+  	if (game.isFinished(white, black))
   		System.out.println("Hoorayy! We have a winner " + Notations.colorToString(game.getCurrentplayer()));
   	else
   		System.out.println("Game finished. Stalemate!");

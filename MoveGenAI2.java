@@ -24,15 +24,13 @@ public class MoveGenAI2 {
 	private int homeRowBlack = 6;
 	private int finishRow;
 	protected ArrayList<Double> ratedPawns;
-	private double estnow;         // base estimation
-  private double est_cost;       // Cost estimation value
-  private double est_attackCost;
-  private boolean white;
+	private int initialCost;         // base estimation
+  private int initialPawnCost;       // Cost estimation value
+  private int initialAttackCost;
   private int INF = -1000;
   private Move bestOption;
 	//private Node<Move> miniMaxTree;
 	
-  //-----Constructor---------------------------------------------------------//
 	
 	public MoveGenAI2(Game game, Board board, Player self, Player opponent) {
 		
@@ -43,15 +41,33 @@ public class MoveGenAI2 {
 		this.finishRow = self.getColor() == Color.WHITE ? 7 : 0;
 	}
 	
-  //-----Move Generator------------------------------------------------------//
+	public Move generator(Player player,int depth){
+		minimax(player, depth);
+		return bestOption;
+	}
 	 	 
+	public int baseEvaluate(Player player){
+		
+		initialPawnCost = 0;
+		initialAttackCost = 0;
+		int out = evaluate(player);
+		initialPawnCost = ratePawns(player);
+		initialAttackCost = rateAttacks(player);
+		return out;
+	}
+	
 	private int ratePawns(Player player) {
 		
 		int pawnScore = 0;
 		
 		for (int i = 0; i < 8; i++)
 			for (int j = 0; j < 8; j++){
-				pawnScore += board.getSquare(i,j).occupiedBy() == player.getColor() ? 1 : -1;
+				Square focus = board.getSquare(i+1, j+1);
+				if (focus.occupiedBy() != Color.NONE) {
+				  if (player.isPassedPawn(focus) || player.getOpponent().isPassedPawn(focus))
+				    pawnScore += focus.occupiedBy() == player.getColor() ? 3 : -3;
+				  pawnScore += focus.occupiedBy() == player.getColor() ? 1 : -1;
+				}
 			}
 		return pawnScore;
 	}
@@ -61,31 +77,38 @@ public class MoveGenAI2 {
 		int attackScore = 0;
 		
 		ArrayList<Move> playerMoves = player.listOfValidMoves();
-		//ArrayList<Move> oppMoves    = player.getOpponent().listOfValidMoves();
+		ArrayList<Move> oppMoves    = player.getOpponent().listOfValidMoves();
 		  
 		for (int i = 0; i < playerMoves.size(); i++){
 			if (playerMoves.get(i).isCapture()){
 			  attackScore += 2;	
 			}
+			if (oppMoves.get(i).isCapture()) {
+				attackScore -= 2;
+			}
 		}
 		return attackScore;
 	}
 	
-	private int evaluate() {
-		return 0;
+	private int evaluate(Player player) {
+		
+		int pc = ratePawns(player) - initialPawnCost;
+		int ac = rateAttacks(player) - initialAttackCost;
+
+		return pc*10 + ac;
 	}
 	
-	private int Max(int depth) {
+	private int Max(Player player, int depth) {
 		
-		if (depth == 0)
-			return evaluate();
+		if (depth == 0 || game.isFinished(player, player.getOpponent()))
+			return evaluate(player);
 		
 		int best = -INF;
-		ArrayList<Move> moves = self.listOfValidMoves();
+		ArrayList<Move> moves = player.listOfValidMoves();
 		while (moves.size() > 0) {
 			Move tempChoice = moves.remove(0);
 			board.applyMove(tempChoice);
-			int val = -Min(depth-1);
+			int val = Min(player.getOpponent(), depth-1);
 			if (val > best) {
 				best = val;
 				bestOption = tempChoice;
@@ -95,23 +118,28 @@ public class MoveGenAI2 {
 		return best;
 	}
 	
-	private int Min(int depth) {
+	private int Min(Player player, int depth) {
 		
-		if (depth == 0)
-			return evaluate();
+		if (depth == 0 || game.isFinished(player, player.getOpponent()))
+			return -evaluate(player);
 		
-		int best = -INF;
-		ArrayList<Move> moves = opponent.listOfValidMoves();
+		int best = INF;
+		ArrayList<Move> moves = player.listOfValidMoves();
 		while (moves.size() > 0) {
 			Move tempChoice = moves.remove(0);
 			board.applyMove(tempChoice);
-			int val = -Max(depth-1);
-			if (val > best) {
+			int val = Max(player.getOpponent(), depth-1);
+			if (val < best) {
 				best = val;
 				bestOption = tempChoice;
 			}
 			board.unapplyMove(tempChoice);
 		}
 		return best;
+	}
+	
+	private void minimax(Player player, int depth) {
+		
+		int val = Max(player, depth);
 	}
 }

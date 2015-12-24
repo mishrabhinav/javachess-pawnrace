@@ -7,7 +7,7 @@ public class Player {
 	private Color color;
 	private boolean isComputerPlayer;
 	private Player opponent;
-	private MoveGenAI moveMaster;
+	private MoveGenAI2 moveMaster;
 	//private MiniMax tester;
 	private Square[] currentPawns = new Square[7];
 	// private Square[] initialPawns = new Square[7];
@@ -28,8 +28,8 @@ public class Player {
 
 		this.opponent = opponent;
 		if (isComputerPlayer)
-			moveMaster = new MoveGenAI(game, board, this, opponent);
-		  //tester = new MiniMax(game, board, this, opponent);
+			//moveMaster = new MoveGenAI(game, board, this, opponent);
+		  moveMaster = new MoveGenAI2(game, board, this, opponent);
 	}
 	
 	public Player getOpponent() {
@@ -157,7 +157,13 @@ public class Player {
 			//moveCounter = 0;
 		}
 */
-		return null;
+		ArrayList<Move> lis = this.listOfValidMoves();
+		for (int i= 0; i < lis.size(); i++) {
+			System.out.println(Notations.moveToString(lis.get(i)));
+		}
+		moveMaster.baseEvaluate(this);
+		
+		return moveMaster.generator(this, 3);
 		}
 	
 	public ArrayList<Move> listOfValidMoves() {
