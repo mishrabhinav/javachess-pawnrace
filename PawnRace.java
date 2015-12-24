@@ -19,13 +19,9 @@ public class PawnRace {
   	
   	board.display();
   	
-  	boolean c = true;
-  	int i = 0;
   	
-  	while(!game.isFinished(white, black) && c) {
+  	while(!game.isFinished(white, black)) {
   		askForMove();
-  		i++;
-  		c = i > 2 ? (white.numValidMoves() != 0 || black.numValidMoves() != 0) : true;
     	board.display();	
   	}
   	
