@@ -110,7 +110,7 @@ public class Player {
 			}
 		}
 
-		// for (int i = moveCounter; i < tempMoves.length; i++)
+		for (int i = moveCounter; i < tempMoves.length; i++)
 		tempMoves[moveCounter] = null;
 
 		return tempMoves;
@@ -132,7 +132,7 @@ public class Player {
 	}
 	
 	public int numValidMoves() {
-		return moveCounter;
+		return this.listOfValidMoves().size();
 	}
 
 	public boolean isPassedPawn(Square square) {
@@ -157,13 +157,11 @@ public class Player {
 			//moveCounter = 0;
 		}
 */
-		ArrayList<Move> lis = this.listOfValidMoves();
-		for (int i= 0; i < lis.size(); i++) {
-			System.out.println(Notations.moveToString(lis.get(i)));
-		}
 		moveMaster.baseEvaluate(this);
+	  Move m = moveMaster.generator(this, 3);
+	  System.out.println(Notations.moveToString(m));
 		
-		return moveMaster.generator(this, 3);
+		return m;
 		}
 	
 	public ArrayList<Move> listOfValidMoves() {
