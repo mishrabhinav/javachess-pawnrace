@@ -27,7 +27,7 @@ public class MoveGenAI2 {
 	private int initialCost;         // base estimation
   private int initialPawnCost;       // Cost estimation value
   private int initialAttackCost;
-  private int INF = -1000;
+  private int INF = 1000;
   private Move bestOption;
 	//private Node<Move> miniMaxTree;
 	
@@ -60,7 +60,7 @@ public class MoveGenAI2 {
 		
 		int pawnScore = 0;
 		
-		for (int i = 0; i < 8; i++)
+		/*for (int i = 0; i < 8; i++)
 			for (int j = 0; j < 8; j++){
 				Square focus = board.getSquare(i+1, j+1);
 				if (focus.occupiedBy() != Color.NONE) {
@@ -68,7 +68,19 @@ public class MoveGenAI2 {
 				    pawnScore += focus.occupiedBy() == player.getColor() ? 3 : -3;
 				  pawnScore += focus.occupiedBy() == player.getColor() ? 1 : -1;
 				}
-			}
+			}*/
+		
+		ArrayList<Square> myPawns = player.listOfPawns();
+		ArrayList<Square> otherPawns = player.getOpponent().listOfPawns();
+		
+		for(Square focus : myPawns) {
+			pawnScore += player.isPassedPawn(focus) ? 3 : 1;
+		}
+		
+		for(Square focus : otherPawns) {
+			pawnScore -= player.getOpponent().isPassedPawn(focus) ? 3 : 1;
+		}
+		
 		return pawnScore;
 	}
 	
@@ -121,7 +133,7 @@ public class MoveGenAI2 {
 	private int Min(Player player, int depth) {
 		
 		if (depth == 0 || game.isFinished(player, player.getOpponent()))
-			return -evaluate(player);
+			return evaluate(player);
 		
 		int best = INF;
 		ArrayList<Move> moves = player.listOfValidMoves();
