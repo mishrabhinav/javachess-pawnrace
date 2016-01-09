@@ -6,17 +6,10 @@ public class MoveGenAI2 {
 	
 	// Self Attributes
 	protected Player self;
-  //private Color selfColor;
-	//private boolean myPassedPawnBool;
-	//private Square myPassedPawn;
 	
 	// Opponent Attributes
 	protected Player opponent;
-  //private Color opponentColor;
-	//private Move[] oppMoves;
-	//private boolean oppPassedPawnBool;
-	//private Square oppPassedPawn;
-	
+  
 	// Global Attributes
 	private Game game;
 	protected Board board;
@@ -24,12 +17,11 @@ public class MoveGenAI2 {
 	private int homeRowBlack = 6;
 	private int finishRow;
 	protected ArrayList<Double> ratedPawns;
-	private int initialCost;         // base estimation
-  private int initialPawnCost;       // Cost estimation value
-  private int initialAttackCost;
+	private int initialCost = 0;
+  private int initialPawnCost = 0;
+  private int initialAttackCost = 0;
   private int INF = 1000;
   private Move bestOption;
-	//private Node<Move> miniMaxTree;
 	
 	
 	public MoveGenAI2(Game game, Board board, Player self, Player opponent) {
@@ -42,7 +34,7 @@ public class MoveGenAI2 {
 	}
 	
 	public Move generator(Player player,int depth){
-		minimax(player, depth);
+		Max(player, depth);
 		return bestOption;
 	}
 	 	 
@@ -60,7 +52,7 @@ public class MoveGenAI2 {
 		
 		int pawnScore = 0;
 		
-		/*for (int i = 0; i < 8; i++)
+		for (int i = 0; i < 8; i++)
 			for (int j = 0; j < 8; j++){
 				Square focus = board.getSquare(i+1, j+1);
 				if (focus.occupiedBy() != Color.NONE) {
@@ -68,9 +60,9 @@ public class MoveGenAI2 {
 				    pawnScore += focus.occupiedBy() == player.getColor() ? 3 : -3;
 				  pawnScore += focus.occupiedBy() == player.getColor() ? 1 : -1;
 				}
-			}*/
+			}
 		
-		ArrayList<Square> myPawns = player.listOfPawns();
+		/*ArrayList<Square> myPawns = player.listOfPawns();
 		ArrayList<Square> otherPawns = player.getOpponent().listOfPawns();
 		
 		for(Square focus : myPawns) {
@@ -80,7 +72,7 @@ public class MoveGenAI2 {
 		for(Square focus : otherPawns) {
 			pawnScore -= player.getOpponent().isPassedPawn(focus) ? 3 : 1;
 		}
-		
+		*/
 		return pawnScore;
 	}
 	
@@ -91,14 +83,18 @@ public class MoveGenAI2 {
 		ArrayList<Move> playerMoves = player.listOfValidMoves();
 		ArrayList<Move> oppMoves    = player.getOpponent().listOfValidMoves();
 		  
-		for (int i = 0; i < playerMoves.size(); i++){
+		for (int i = 0; i < playerMoves.size(); i++) {
 			if (playerMoves.get(i).isCapture()){
 			  attackScore += 2;	
 			}
+		}
+		
+		for (int i = 0; i < oppMoves.size(); i++) {
 			if (oppMoves.get(i).isCapture()) {
 				attackScore -= 2;
 			}
 		}
+		
 		return attackScore;
 	}
 	
@@ -112,7 +108,10 @@ public class MoveGenAI2 {
 	
 	private int Max(Player player, int depth) {
 		
-		if (depth == 0 || game.isFinished(player, player.getOpponent()))
+		if (game.isFinished(player, player.getOpponent()))
+			return -300;
+		
+		if (depth == 0)
 			return evaluate(player);
 		
 		int best = -INF;
@@ -125,6 +124,8 @@ public class MoveGenAI2 {
 				best = val;
 				bestOption = tempChoice;
 			}
+			//board.display();
+			//System.out.println(Notations.moveToString(tempChoice));
 			board.unapplyMove(tempChoice);
 		}
 		return best;
@@ -132,7 +133,10 @@ public class MoveGenAI2 {
 	
 	private int Min(Player player, int depth) {
 		
-		if (depth == 0 || game.isFinished(player, player.getOpponent()))
+		if (game.isFinished(player, player.getOpponent()))
+			return 300;
+		
+		if (depth == 0)
 			return evaluate(player);
 		
 		int best = INF;
@@ -145,13 +149,11 @@ public class MoveGenAI2 {
 				best = val;
 				bestOption = tempChoice;
 			}
+			//board.display();
+			//System.out.println(Notations.moveToString(tempChoice));
 			board.unapplyMove(tempChoice);
 		}
 		return best;
 	}
 	
-	private void minimax(Player player, int depth) {
-		
-		int val = Max(player, depth);
-	}
 }

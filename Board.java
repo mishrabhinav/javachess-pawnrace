@@ -41,6 +41,13 @@ public class Board {
 
     board[fX][fY].setOccupier(initialSq.occupiedBy());
     board[iX][iY].setOccupier(Color.NONE);
+    
+    if (move.isEnPassantCapture()) {
+    	if (initialSq.occupiedBy() == Color.WHITE)
+    		board[fX - 1][fY].setOccupier(Color.NONE);
+    	else
+    		board[fX + 1][fY].setOccupier(Color.NONE);
+    }
   }
 
   public void unapplyMove(Move move) {
@@ -60,14 +67,14 @@ public class Board {
     	board[iX][iY].setOccupier(finalSq.occupiedBy());
       board[fX][fY].setOccupier(Color.NONE);
       board[fX + i][fY].setOccupier(c);
-    } 
-    else if (move.isCapture()) {
+      
+    } else if (move.isCapture()) {
     	board[iX][iY].setOccupier(finalSq.occupiedBy());
       board[fX][fY].setOccupier(c);
-    }
-    else {
-    board[iX][iY].setOccupier(finalSq.occupiedBy());
-    board[fX][fY].setOccupier(Color.NONE);
+      
+    } else {
+      board[iX][iY].setOccupier(finalSq.occupiedBy());
+      board[fX][fY].setOccupier(Color.NONE);
     }
   }
 

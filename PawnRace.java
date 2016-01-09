@@ -93,7 +93,7 @@ public class PawnRace {
   	black = new Player(game, board, Color.BLACK, isBlackComputer);
 
   	white.setOpponent(black);
-  	black.setOpponent(black);
+  	black.setOpponent(white);
   	
   	current = white;
   	//Player Introduction Ends.
@@ -110,28 +110,29 @@ public class PawnRace {
   			  game.applyMove(mm);
   	} else {
   	
-  	while (b) {
+  	  while (b) {
 
-    	System.out.println(x+ "\nCurrent Player: " + Notations.colorToString(game.getCurrentplayer()) + "\nPlease enter your move: ");
+    	  System.out.println(x+ "\nCurrent Player: " + Notations.colorToString(game.getCurrentplayer()) + "\nPlease enter your move: ");
     	
-    	printValidMoves(current.getAllValidMoves());
+    	  printValidMoves(current.getAllValidMoves());
   	
-    	String nextMove = input.next();
+    	  String nextMove = input.next();
   	
-    	Move tempMove = Notations.stringToMove(board, game.getCurrentplayer(), nextMove);
+    	  Move tempMove = Notations.stringToMove(board, game.getCurrentplayer(), nextMove);
   	
-    	try {
+    	  try {
     		
-  	    if(current.isValidMove(tempMove)) {
-  		    game.applyMove(tempMove);
-    		  b = false;
-    	  }  
-  	  } 
-  	  catch (Exception e) {
-  	  	x = "\nSorry! Move not valid. Enter again.\n";
-    	}
-    }
+  	      if(current.isValidMove(tempMove)) {
+  		      game.applyMove(tempMove);
+    		    b = false;
+    	    }  
+  	    } 
+  	    catch (Exception e) {
+  	  	  x = "\nSorry! Move not valid. Enter again.\n";
+    	  }
+      }
+   }
+  	 current = current == white ? black : white;
   }
-  	current = current == white ? black : white;
-  }
+  
 }

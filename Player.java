@@ -13,6 +13,7 @@ public class Player {
 	// private Square[] initialPawns = new Square[7];
 	private Move[] validMoves = new Move[30];
 	private int moveCounter;
+	private int finishLine;
 
 	public Player(Game game, Board board, Color color, boolean isComputerPlayer) {
 
@@ -22,6 +23,7 @@ public class Player {
 		this.isComputerPlayer = isComputerPlayer;
 		// initialPawns = this.getAllPawns();
 		currentPawns = this.getAllPawns();
+		finishLine = color == Color.WHITE ? 7 : 0;
 	}
 
 	public void setOpponent(Player opponent) {
@@ -52,10 +54,10 @@ public class Player {
 		int c = 0;
 		Square[] tempPawns = new Square[7];
 
-		for (int i = 1; i <= 8; i++)
-			for (int j = 1; j <= 8; j++) {
+		for (int i = 1; i < 9; i++)
+			for (int j = 1; j < 9; j++) {
 				Square temp = board.getSquare(i, j);
-				if (temp.occupiedBy() == color) {
+				if (temp.occupiedBy() == color && c < 7) {
 					// System.out.println(Notations.toSAN(temp));
 					tempPawns[c] = temp;
 					c++;
@@ -75,16 +77,14 @@ public class Player {
 		moveCounter = 0;
 		Move[] tempMoves = new Move[30];
 
-		Square[] newPawns = this.getAllPawns();
-		currentPawns = newPawns;
+		currentPawns = this.getAllPawns();
 
 		for (int i = 0; i < 7; i++) {
-			if (currentPawns[i] != null) {
+			if (currentPawns[i] != null && currentPawns[i].getX() != finishLine) {
 				Square oneF = MoveSet.oneForward(board, currentPawns[i], color);
 				Square twoF = MoveSet.twoForward(board, currentPawns[i], color);
 				Square enPassant = game.getLastMove() != null ? MoveSet.enPassantKill(board, currentPawns[i], game.getLastMove(), color): null;
 				Square[] diag = MoveSet.diagonalKill(board, currentPawns[i], color);
-				;
 
 				if (oneF != null) {
 					tempMoves[moveCounter] = new Move(currentPawns[i], oneF, false, false);
@@ -149,7 +149,7 @@ public class Player {
 		End */
 /*		this.getAllValidMoves();
 		try {
-		  Move moveSet = moveMaster.moveGen(this.getAllValidMoves(), moveCounter);
+		  Move moveSet = moveMaster.moveGen(this.getAllValidMoves() , moveCounter);
 		  game.applyMove(moveSet);
 		  System.out.println("" + tester.evaluateBoard(this, opponent));
 		}
@@ -157,7 +157,7 @@ public class Player {
 			//moveCounter = 0;
 		}
 */
-		moveMaster.baseEvaluate(this);
+		//moveMaster.baseEvaluate(this);
 	  Move m = moveMaster.generator(this, 3);
 	  System.out.println(Notations.moveToString(m));
 		
